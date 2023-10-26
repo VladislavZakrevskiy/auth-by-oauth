@@ -8,7 +8,7 @@ export function lazyImport<T extends React.ComponentType<any>, I extends { [K2 i
 	return Object.create({
 		[name]: React.lazy(() => factory().then((module) => ({ default: module[name] }))),
 	});
-}
+} 
 
 // Usage
 // const { Home } = lazyImport(() => import("./Home"), "Home");
