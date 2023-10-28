@@ -1,40 +1,19 @@
-import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, githubOAuthURL } from "@/config/githubAuth";
+import { githubOAuthURL } from "@/config/githubAuth";
 import axios from "axios";
 import React from "react";
-import { useStore } from "@/stores/UserStore";
-import { User } from "@/types/User";
+// import { useStore } from "@/stores/UserStore";
 
 export const GithubLogin = () => {
-	const addUser = useStore.use.setUser();
+	// const setUser = useStore.use.setUser();
 
 	const handleLogin = async (code: string) => {
-		try {
-			// Exchange the code for an access token
-			const data = await axios.post<void, { access_token: string }>(
-				"https://github.com/login/oauth/access_token",
-				undefined,
-				{
-					headers: { "Content-Type": "application/json" },
-					params: {
-						client_id: GITHUB_CLIENT_ID,
-						client_secret: GITHUB_CLIENT_SECRET,
-						code,
-					},
-				},
-			);
+		const res = await axios.get("http://localhost:3000/me", {
+			headers: {
+				authorization: code,
+			},
+		});
 
-			const accessToken = data.access_token;
-
-			// Fetch the user's GitHub profile
-			const res = await axios.get<void, { data: User }>("https://api.github.com/user", {
-				headers: { "Content-Type": `Bearer ${accessToken}`, "User-Agent": "zustand-reactQueryV5-tailwind-bulletproof" },
-			});
-
-			addUser(res.data);
-			console.log(res);
-		} catch (error) {
-			console.error(error);
-		}
+		console.log(res);
 	};
 
 	const handleGitHubCallback = () => {
