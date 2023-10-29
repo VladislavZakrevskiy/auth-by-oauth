@@ -1,8 +1,8 @@
-import { useStore } from "@/stores/UserStore";
 import { GoogleLogin as OAuthGoogleLogin, CredentialResponse } from "@react-oauth/google";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useStore } from "@/stores/UserStore";
 
 export const GoogleLogin = () => {
 	const nav = useNavigate();
@@ -20,18 +20,19 @@ export const GoogleLogin = () => {
 
 	useEffect(() => {
 		if (googleResponse) {
-			axios
-				.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${googleResponse.credential}`, {
+			const fetchUser = async () => {
+				const res = await axios.get("http://localhost:3000/me", {
 					headers: {
-						Authorization: `Bearer ${googleResponse.credential}`,
-						Accept: "application/json",
+						authorization: `Bearer ${googleResponse.credential}`,
+						"auth-by": "GOOGLE",
 					},
-				})
-				.then((res) => {
-                    console.log(res.data)
-					setUser(res.data);
-				})
-				.catch((err) => console.log(err));
+				});
+
+				setUser(res.data);
+				console.log(res);
+			};
+
+			fetchUser();
 		}
 	}, [googleResponse]);
 
