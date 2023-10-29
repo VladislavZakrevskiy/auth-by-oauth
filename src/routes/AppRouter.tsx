@@ -6,10 +6,10 @@ import { FC, useEffect } from "react";
 import { useStore } from "@/stores/UserStore";
 
 export const AppRouter: FC = () => {
-	const getUser = useStore.use.getUser();
+	// const getUser = useStore.use.getUser();
 	const user = useStore.use.user();
 	useEffect(() => {
-		getUser();
+		// getUser();
 	}, []);
 
 	const commonRoutes = [{ path: "/", element: <Landing /> }];

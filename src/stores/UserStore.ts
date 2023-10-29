@@ -2,18 +2,22 @@ import { User } from "@/types/User";
 import { createSelectorFunctions } from "auto-zustand-selectors-hook";
 import { create } from "zustand";
 
+export type Provider = "GITHUB" | "GOOGLE" | "VK";
+
 type State = {
 	user: User | null;
+	authedBy: Provider | "";
 };
 
 type Action = {
 	setUser: (user: User) => void;
 	deleteUser: () => void;
-	getUser: () => void
+	setAuthedBy: (provider: Provider) => void;
 };
 
 const useUserStore = create<State & Action>((set) => ({
 	user: null,
+	authedBy: "",
 	setUser: (user) =>
 		set(() => ({
 			user,
@@ -22,10 +26,7 @@ const useUserStore = create<State & Action>((set) => ({
 		set(() => ({
 			user: null,
 		})),
-	getUser: () => set((state) => {
-		return state
-	})
+	setAuthedBy: (provider) => set((state) => ({ ...state, authedBy: provider })),
 }));
 
 export const useStore = createSelectorFunctions(useUserStore);
-

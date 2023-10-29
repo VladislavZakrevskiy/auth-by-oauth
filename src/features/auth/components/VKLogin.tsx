@@ -1,40 +1,14 @@
-import { vkOAuthURL } from "@/config/vkAuth";
-import axios from "axios";
-import { useEffect } from "react";
+import { config } from "@/config/config";
 import { useStore } from "@/stores/UserStore";
 
 export const VKLogin = () => {
-	const setUser = useStore.use.setUser();
-
-	const handleLogin = async (code: string) => {
-		const res = await axios.get("http://localhost:3000/me", {
-			headers: {
-				authorization: `Bearer ${code}`,
-				"auth-by": "VK",
-			},
-		});
-
-		setUser(res.data);
-		console.log(res);
-	};
-
-	const handleGitHubCallback = () => {
-		const queryString = window.location.search;
-		const urlParams = new URLSearchParams(queryString);
-		const code = urlParams.get("code");
-
-		if (code) {
-			handleLogin(code);
-		}
-	};
-
-	useEffect(() => {
-		handleGitHubCallback();
-	}, []);
+	const setAuthedBy = useStore.use.setAuthedBy();
 
 	return (
 		<div>
-			<a href={vkOAuthURL}>Sign in with GitHub</a>
+			<a href={config.VK.vkOAuthURL} onClick={() => setAuthedBy("VK")}>
+				Sign in with GitHub
+			</a>
 		</div>
 	);
 };
