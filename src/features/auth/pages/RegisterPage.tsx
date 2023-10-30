@@ -1,11 +1,9 @@
-import { GoogleLogin } from "../components/GoogleLogin";
-import { GithubLogin } from "../components/GithubLogin";
+import { AuthForm } from "../../../components/Form/AuthForm";
 
 export const RegisterPage = () => {
 	return (
-		<div>
-			<GoogleLogin />
-			<GithubLogin />
+		<div className="w-full h-full min-h-[100vh] flex justify-center items-center">
+			<AuthForm errors={[]} onSubmit={() => console.log("submit")} type="register" />
 		</div>
 	);
 };

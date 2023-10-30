@@ -5,10 +5,8 @@ export const GithubLogin = () => {
 	const setAuthedBy = useStore.use.setAuthedBy();
 
 	return (
-		<div>
-			<a href={config.GITHUB.githubOAuthURL} onClick={() => setAuthedBy("GITHUB")}>
-				Sign in with GitHub
-			</a>
-		</div>
+		<a href={config.GITHUB.githubOAuthURL} onClick={() => setAuthedBy("GITHUB")} className="w-10">
+			<img src="/github-mark.png" alt="Github" />
+		</a>
 	);
 };

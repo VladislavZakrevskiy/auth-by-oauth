@@ -1,6 +1,6 @@
 import { ErrorBoundary } from "react-error-boundary";
 import { ReactNode } from "react";
-import { Button } from "@/components/Elements/Button";
+import { Button } from "@material-tailwind/react";
 
 const ErrorFallback = () => {
 	return (

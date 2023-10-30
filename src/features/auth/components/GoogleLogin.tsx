@@ -11,5 +11,9 @@ export const GoogleLogin = () => {
 		onSuccess: () => setAuthedBy("GOOGLE"),
 	});
 
-	return <a onClick={() => login()}>Sign in with Google 🚀 </a>;
+	return (
+		<a onClick={() => login()} className="w-10">
+			<img alt="G" src="/Google.png" />
+		</a>
+	);
 };
