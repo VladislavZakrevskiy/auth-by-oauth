@@ -1,23 +1,45 @@
-import { FC, RefAttributes, useState } from "react";
-import { Card, Typography, Input, Checkbox, Button, Alert, AlertProps } from "@material-tailwind/react";
+import { FC, useState } from "react";
+import { Card, Typography, Input, Checkbox, Button, Alert } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { GithubLogin } from "@/features/auth/components/GithubLogin";
 import { VKLogin } from "@/features/auth/components/VKLogin";
 import { GoogleLogin } from "@/features/auth/components/GoogleLogin";
+import { useForm, SubmitHandler, FieldError } from "react-hook-form";
+
+export type AuthInputs = {
+	name: string;
+	email: string;
+	password: string;
+};
 
 interface AuthFormProps {
-	onSubmit: () => void;
-	errors: string[];
+	onSubmit: SubmitHandler<AuthInputs>;
 	type?: "login" | "register";
 }
 
-const ErrorAlert: FC<AlertProps & RefAttributes<HTMLDivElement>> = (props) => {
-	const [isOpen, setIsOpen] = useState(false);
+const ErrorAlert: FC<{
+	children:
+		| FieldError
+		| (Record<string, Partial<{ type: string | number; message: string }>> &
+				Partial<{ type: string | number; message: string }>);
+}> = (props) => {
+	const [isOpen, setIsOpen] = useState(true);
+	const { ref, type } = props.children;
 
-	return <Alert open={isOpen} onClose={() => setIsOpen(false)} color="red" {...props} />;
+	return (
+		<Alert open={isOpen} onClose={() => setIsOpen(false)} color="red">
+			Error "{ref?.name}": {type}
+		</Alert>
+	);
 };
 
-export const AuthForm: FC<AuthFormProps> = ({ onSubmit, errors, type }) => {
+export const AuthForm: FC<AuthFormProps> = ({ onSubmit, type }) => {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<AuthInputs>();
+
 	return (
 		<>
 			<Card color="transparent" shadow={false}>
@@ -27,12 +49,13 @@ export const AuthForm: FC<AuthFormProps> = ({ onSubmit, errors, type }) => {
 				<Typography color="gray" className="mt-1 font-normal">
 					Nice to meet you! Enter your details to {type === "login" ? "sign up" : "register"}.
 				</Typography>
-				<form className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={onSubmit}>
+				<form className="mt-6 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={handleSubmit(onSubmit)}>
 					<div className="mb-1 flex flex-col gap-6">
 						<Typography variant="h6" color="blue-gray" className="-mb-3">
 							Your Name
 						</Typography>
 						<Input
+							{...register("name", { required: true, min: 2, max: 32 })}
 							crossOrigin={1}
 							size="lg"
 							placeholder="name@mail.com"
@@ -45,6 +68,7 @@ export const AuthForm: FC<AuthFormProps> = ({ onSubmit, errors, type }) => {
 							Your Email
 						</Typography>
 						<Input
+							{...register("email", { required: true, min: 2, max: 32 })}
 							crossOrigin={1}
 							size="lg"
 							placeholder="name@mail.com"
@@ -57,6 +81,7 @@ export const AuthForm: FC<AuthFormProps> = ({ onSubmit, errors, type }) => {
 							Password
 						</Typography>
 						<Input
+							{...register("password", { required: true, min: 2, max: 32 })}
 							crossOrigin={1}
 							type="password"
 							size="lg"
@@ -95,8 +120,8 @@ export const AuthForm: FC<AuthFormProps> = ({ onSubmit, errors, type }) => {
 					</div>
 				</form>
 			</Card>
-			<div>
-				{errors.map((error) => (
+			<div className="absolute w-full bottom-0 left-0 right-0 grid gap-2">
+				{Object.entries(errors).map(([, error]) => (
 					<ErrorAlert>{error}</ErrorAlert>
 				))}
 			</div>

@@ -8,5 +8,8 @@ export default defineConfig({
     alias: [
       {find: '@', replacement: '/src'}
     ]
-  }
+  }, 
+  // define: {
+  //   __API__: "http://localhost:3000"
+  // }
 })

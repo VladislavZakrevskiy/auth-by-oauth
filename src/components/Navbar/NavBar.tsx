@@ -1,8 +1,8 @@
-import React, { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Navbar as MTNavbar, Collapse, Typography, IconButton } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useStore } from "@/stores/UserStore";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "@/stores/hooks";
 
 const NavItem = ({ children, to }: { children: ReactNode; to: string }) => (
 	<Typography as="li" variant="small" color="blue-gray" className="p-1 font-medium">
@@ -13,7 +13,7 @@ const NavItem = ({ children, to }: { children: ReactNode; to: string }) => (
 );
 
 function NavList() {
-	const user = useStore.use.user();
+	const { user } = useAppSelector((state) => state.user);
 
 	if (user) {
 		return (
@@ -32,11 +32,11 @@ function NavList() {
 }
 
 export function Navbar() {
-	const [openNav, setOpenNav] = React.useState(false);
+	const [openNav, setOpenNav] = useState(false);
 
 	const handleWindowResize = () => window.innerWidth >= 960 && setOpenNav(false);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		window.addEventListener("resize", handleWindowResize);
 
 		return () => {

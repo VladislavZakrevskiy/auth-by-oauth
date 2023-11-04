@@ -3,10 +3,10 @@ import { Landing } from "@/features/misc";
 import { protectedRoutes } from "./ProtectedRoutes";
 import { publicRoutes } from "./PublicRoutes";
 import { FC } from "react";
-import { useStore } from "@/stores/UserStore";
+import { useAppSelector } from "@/stores/hooks";
 
 export const AppRouter: FC = () => {
-	const user = useStore.use.user();
+	const { user } = useAppSelector((state) => state.user);
 
 	const commonRoutes = [{ path: "/", element: <Landing /> }];
 	const routes = user ? protectedRoutes : publicRoutes;

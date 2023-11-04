@@ -10,7 +10,7 @@ export const config: Config = {
 	},
 	VK: {
 		VK_CLIENT_ID: "51780892",
-		vkOAuthURL: `https://oauth.vk.com/authorize?client_id=51780892&display=page&redirect_uri=http://localhost:5173/oauth/success`,
+		vkOAuthURL: `https://oauth.vk.com/authorize?client_id=51780892&display=page&redirect_uri=http://localhost:5173/oauth/success?provider=VK`,
 	},
 	REDIRECT_URL: "http://localhost:5173/oauth/success",
 };

@@ -1,6 +1,8 @@
 export type User = {
 	id: string;
-	type: "info" | "warning" | "success" | "error";
-	title: string;
-	message?: string;
 };
+
+
+export const isUser = (obj: any): obj is User => {
+	return obj?.username
+}
