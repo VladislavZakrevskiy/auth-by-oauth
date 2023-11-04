@@ -1,11 +1,9 @@
 import { config } from "@/config/config";
-import { useStore } from "@/stores/UserStore";
 
 export const VKLogin = () => {
-	const setAuthedBy = useStore.use.setAuthedBy();
 
 	return (
-		<a href={config.VK.vkOAuthURL} onClick={() => setAuthedBy("VK")} className="w-10">
+		<a href={config.VK.vkOAuthURL} onClick={() => localStorage.setItem('auth-by',"VK")} className="w-10">
 			<svg viewBox="0 0 101 100" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<g clipPath="url(#clip0_2_40)">
 					<path

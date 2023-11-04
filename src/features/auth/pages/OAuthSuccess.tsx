@@ -4,19 +4,20 @@ import { useStore } from "@/stores/UserStore";
 
 export const OAuthSuccess = () => {
 	const setUser = useStore.use.setUser();
-	const authedBy = useStore.use.authedBy();
+	const authBy = localStorage.getItem('auth-by')
 	const user = useStore.use.user();
 
 	const handleLogin = async (code: string) => {
 		const res = await axios.get("http://localhost:3000/me", {
 			headers: {
 				authorization: `Bearer ${code}`,
-				"auth-by": authedBy,
+				"auth-by": authBy,
 			},
 		});
 
 		setUser(res.data);
 		console.log(res);
+		localStorage.removeItem('auth-by')
 	};
 
 	const handleGitHubCallback = () => {
